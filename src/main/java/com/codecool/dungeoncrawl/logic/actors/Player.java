@@ -8,26 +8,21 @@ import java.util.StringJoiner;
 
 public class Player extends Actor {
 
-    public boolean isHasTorch() {
-        return hasTorch;
-    }
-
-    public void setHasTorch(boolean hasTorch) {
-        this.hasTorch = hasTorch;
-    }
-
-
     public boolean hasTorch = false;
     public boolean hasKey = false;
     public ArrayList<Item> inventory = new ArrayList<>();
+
     public Player(Cell cell) {
         super(cell);
         this.setStrength(5);
         this.setHealth(15);
     }
-    public String getTileName() {
-        return "player";
-    }
+
+    public String getTileName() { return "player"; }
+
+    public boolean isHasTorch() { return hasTorch; }
+
+    public void setHasTorch(boolean hasTorch) { this.hasTorch = hasTorch; }
 
     public String canSee(Cell cell) {
         if (this.hasTorch) {
@@ -96,4 +91,6 @@ public class Player extends Actor {
         }
         return sj.toString();
     }
+
+
 }

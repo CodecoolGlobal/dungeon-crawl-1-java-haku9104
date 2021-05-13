@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="dungeon-crawl:jar">
+    <output-path>$PROJECT_DIR$/../../jar</output-path>
+    <root id="archive" name="dungeon-crawl.jar">
+      <element id="module-output" name="dungeon-crawl" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/12.0.2/javafx-graphics-12.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/12.0.2/javafx-controls-12.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/12.0.2/javafx-controls-12.0.2-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/12.0.2/javafx-base-12.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/12.0.2/javafx-base-12.0.2-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/12.0.2/javafx-graphics-12.0.2-win.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
