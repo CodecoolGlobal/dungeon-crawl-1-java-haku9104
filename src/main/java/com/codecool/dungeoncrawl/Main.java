@@ -17,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -70,12 +71,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
         mainMenu(primaryStage);
-
     }
 
     public void preGameSettings(Stage primaryStage) throws FileNotFoundException {
         ImageView selectedImage = new ImageView();
-        Image image1 = new Image(new FileInputStream("C:\\Users\\haku9104\\Desktop\\fdc.png"));
+        Image image1 = new Image(Main.class.getResourceAsStream("/fdc.png"));
         selectedImage.setImage(image1);
         HBox gameLogo = new HBox(selectedImage);
         Button startButton = new Button("Start the Game");
@@ -124,7 +124,8 @@ public class Main extends Application {
 
     public void mainMenu(Stage primaryStage) throws FileNotFoundException, RuntimeException {
         ImageView selectedImage = new ImageView();
-        Image image1 = new Image(new FileInputStream("C:\\Users\\haku9104\\Desktop\\fdc.png"));
+        Image image1 = new Image(Main.class.getResourceAsStream("/fdc.png"));
+        // Image image1 = new Image(new FileInputStream("C:\\Users\\haku9104\\Desktop\\fdc.png"));
         selectedImage.setImage(image1);
         HBox gameLogo = new HBox(selectedImage);
         Button startGameButton = new Button("New Adventure");
@@ -259,6 +260,8 @@ public class Main extends Application {
         if(!map.getPlayer().isAlive()) {
             lostGame.showAndWait();
             try {
+                map = MapLoader.loadMap("/map2.txt");
+                map = MapLoader.loadMap("/map.txt");
                 mainMenu(stage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -267,6 +270,8 @@ public class Main extends Application {
         if(map.getPlayer().isHasWon()) {
             wonGame.showAndWait();
             try {
+                map = MapLoader.loadMap("/map2.txt");
+                map = MapLoader.loadMap("/map.txt");
                 mainMenu(stage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -286,14 +291,55 @@ public class Main extends Application {
                 try {
                     cell = map.getCell(x+playerX-12, y+playerY-10);
                 } catch(IndexOutOfBoundsException ex) {
-                    Cell emptyCell = new Cell(map, x, y, CellType.EMPTY);
+                    Cell emptyCell = new Cell(map, x+playerX-12, y+playerY-10, CellType.EMPTY);
+                    if (map.getPlayer().canSee(emptyCell).equals("hardly")) {
+                        context.setGlobalAlpha(0.5);
+                    } else if (map.getPlayer().canSee(emptyCell).equals("little")) {
+                        context.setGlobalAlpha(0.7);
+                    } else if (map.getPlayer().canSee(emptyCell).equals("yes")) {
+                        context.setGlobalAlpha(1);
+                    } else {
+                        context.setGlobalAlpha(0.3);
+                    }
                     Tiles.drawTile(context, emptyCell, x, y);
+                    context.setGlobalAlpha(1);
                     continue;
                 }
-
-                if (map.getPlayer().canSee(cell).equals("no")) {
-                    Cell cantSeeCell = new Cell(map, x, y, CellType.CANTSEE);
+                if (cell.getType() == CellType.EMPTY && cell.getActor() == null) {
+                    Cell cantSeeCell = new Cell(map, x, y, CellType.EMPTY);
+                    if (map.getPlayer().canSee(cell).equals("hardly")) {
+                        context.setGlobalAlpha(0.5);
+                    } else if (map.getPlayer().canSee(cell).equals("little")) {
+                        context.setGlobalAlpha(0.7);
+                    } else if (map.getPlayer().canSee(cell).equals("yes")) {
+                        context.setGlobalAlpha(1);
+                    } else {
+                        context.setGlobalAlpha(0.3);
+                    }
                     Tiles.drawTile(context, cantSeeCell, x, y);
+                    context.setGlobalAlpha(1);
+                } else if (map.getPlayer().canSee(cell).equals("no") && !(cell.getActor() instanceof Player)){
+                    context.setGlobalAlpha(0.3);
+                    Cell cantSeeCell = new Cell(map, x, y, CellType.EMPTY);
+                    Tiles.drawTile(context, cantSeeCell, x, y);
+                    context.setGlobalAlpha(1);
+                } else if (map.getPlayer().canSee(cell).equals("hardly") && !(cell.getActor() instanceof Player)){
+                    context.setGlobalAlpha(0.5);
+                    if (cell.getActor() != null) {
+                        Tiles.drawTile(context, cell.getActor(), x, y);
+                    } else {
+                        Tiles.drawTile(context, cell, x, y);
+                    }
+                    context.setGlobalAlpha(1);
+                } else if (map.getPlayer().canSee(cell).equals("little") && !(cell.getActor() instanceof Player)){
+                    context.setGlobalAlpha(0.7);
+                    Cell cantSeeCell = new Cell(map, x, y, CellType.EMPTY);
+                    if (cell.getActor() != null) {
+                        Tiles.drawTile(context, cell.getActor(), x, y);
+                    } else {
+                        Tiles.drawTile(context, cell, x, y);
+                    }
+                    context.setGlobalAlpha(1);
                 } else {
                     if (cell.getActor() != null) {
                         Tiles.drawTile(context, cell.getActor(), x, y);
